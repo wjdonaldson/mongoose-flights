@@ -7,8 +7,10 @@ var flightsCtrl = require('../controllers/flights');
 
 /* GET flights listing. */
 router.get('/', flightsCtrl.index);
-// GET /movies/new
+// GET /flight/new
 router.get('/new', flightsCtrl.new);
+// GET /flights/:id (show functionality) MUST be below new route
+router.get('/:id', flightsCtrl.show);
 // POST /movies
 router.post('/', flightsCtrl.create);
 

@@ -1,9 +1,11 @@
 // controllers/flight.js
 
 const Flight = require('../models/flight');
+const Ticket = require('../models/ticket');
 
 module.exports = {
   index,
+  show,
   new: newFlight,
   create
 };
@@ -16,18 +18,29 @@ async function index(req, res) {
   });
 }
 
+async function show(req, res) {
+   const flight = await Flight.findById(req.params.id);
+   const tickets = await Ticket.find({flight: flight._id});
+   res.render('flights/show', { title: 'Flight Detail', flight, tickets });
+}
+
+// async function show(req, res) {
+//   Flight.findById(req.params.id, function(err, flight) {
+//     Ticket.find({flight: flight._id}, function(err, tickets) {
+//       res.render('flights/show', { title: 'Flight Detail', flight, tickets });
+//     });
+//   });
+// }
+
 function newFlight(req, res) {
   const newFlight = new Flight();
   const dt = newFlight.departs;
   let departsDate = `${dt.getFullYear()}-${(dt.getMonth() + 1).toString().padStart(2, '0')}`;
   departsDate += `-${dt.getDate().toString().padStart(2, '0')}T${dt.toTimeString().slice(0, 5)}`;
-  newFlight.departs = departsDate;
-  console.log(`departsDate: ${departsDate}`);
-  // res.render('flights/new', { departsDate });
   res.render('flights/new', {
-    flight: newFlight,
     errorMsg: '',
-    title: "New Skill" });
+    title: "Add A New Flight",
+    departsDate});
 }
 
 async function create(req, res) {
@@ -42,7 +55,7 @@ async function create(req, res) {
     console.log(err);
     res.render('flights/new', {
       errorMsg: err.message,
-      title: "New Skill"
+      title: "Add A New Flight"
     });
   }
 }

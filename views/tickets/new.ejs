@@ -1,0 +1,20 @@
+<%- include('../partials/header') %>
+
+<div class="container">
+  <h2>Enter a New Ticket</h2>
+  <form action="/flights/<%= f_id %>/tickets" method="POST">
+    <div class="mb-3">
+      <label for="seat" class="form-label">Seat:</label>
+      <input type="text" class="form-control" name="seat" required pattern="[A-F][1-9]\d?" />
+    </div>
+    <div class="mb-3">
+      <label for="price" class="form-label">Price:</label>
+      <input type="text" class="form-control" name="price" required pattern="^([0-9]+(\.?[0-9]?[0-9]?)?)" />
+    </div>
+    <div class="mb-3">
+      <button type="submit" class="btn btn-primary">Add Ticket</button>
+    </div>
+  </form>
+</div>
+
+<%- include('../partials/footer') %>

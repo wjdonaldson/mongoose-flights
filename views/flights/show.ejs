@@ -1,0 +1,89 @@
+<%- include('../partials/header') %>
+
+<div class="container">
+  <div class="mb-2"><h5><b>Airline:</b> <%= flight.airline %></h5></div>
+  <div class="mb-2"><h5><b>Airport:</b> <%= flight.airport %></h5></div>
+  <div class="mb-2"><h5><b>Flight #:</b> <%= flight.flightNo %></h5></div>
+  <div class="mb-2"><h5><b>Departs:</b> <%= flight.departs.toLocaleString() %></h5></div>
+
+  <div class="row mt-5">
+    <div class="col-md-5">
+      <h2>Destinations</h2>
+        <% if (flight.destinations.length) { %>
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Airport</th>
+                <th>Arrival</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% flight.destinations.sort((a,b) => a.arrival - b.arrival).forEach(function(d) { %>
+                <tr>
+                  <td><%= d.airport %></td>
+                  <td><%= d.arrival.toLocaleString() %></td>
+                </tr>
+              <% }); %>
+            </tbody>
+          </table>
+        <% } else { %>
+          <h5>No Destinations Specified Yet</h5>
+        <% } %>
+        <br /><br />
+        <h2>Add Destination</h2>
+        <form
+          id="add-destination-form"
+          method="POST"
+          action="/flights/<%= flight._id %>/destinations"
+        >
+        <div class="mb-3">
+          <label for="airport" class="form-label">Airport:</label>
+          <select class="form-control" name="airport">
+            <option value="AUS">AUS</option>
+            <option value="DFW">DFW</option>
+            <option value="DEN">DEN</option>
+            <option value="LAX">LAX</option>
+            <option value="SAN">SAN</option>
+            <option value="SMF" selected>SMF</option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label for="arrival" class="form-label">Arrival:</label>
+          <input type="datetime-local" class="form-control" name="arrival"/>
+        </div>
+        <div class="mb-3">
+          <button type="submit" class="btn btn-primary">Add</button>
+        </div>
+      </form>
+    </div>
+    <div class="col-md-5 offset-md-1">
+      <h2>Tickets</h2>
+      <% if (tickets.length) { %>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Seat</th>
+              <th>Price</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% tickets.forEach(function(t) { %>
+              <tr>
+                <td><%= t.seat %></td>
+                <td><%= new Intl.NumberFormat('en-US', {style: 'currency', currency: 'USD'}).format(t.price) %></td>
+              </tr>
+            <% }); %>
+          </tbody>
+        </table>
+      <% } else { %>
+        <h5>No Tickets Sold Yet</h5>
+      <% } %>
+      <br />
+      <form action="/flights/<%= flight._id %>/tickets/new" method="GET">
+        <button class="btn btn-primary" type="submit">New Ticket</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>
