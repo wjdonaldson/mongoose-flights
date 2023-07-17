@@ -21,7 +21,7 @@
               <% flight.destinations.sort((a,b) => a.arrival - b.arrival).forEach(function(d) { %>
                 <tr>
                   <td><%= d.airport %></td>
-                  <td><%= d.arrival.toLocaleString() %></td>
+                  <td><%= d.arrival ? d.arrival.toLocaleString() : "" %></td>
                 </tr>
               <% }); %>
             </tbody>

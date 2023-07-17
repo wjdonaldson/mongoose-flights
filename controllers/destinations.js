@@ -15,8 +15,7 @@ async function create(req, res) {
   } catch (err) {
     console.log(err);
   }
-  // TODO: could do a flights.destinations.sort() here
-
+  
   // Step 5:  Respond to the Request (redirect if data has been changed)
   res.redirect(`/flights/${flight._id}`);
 }
